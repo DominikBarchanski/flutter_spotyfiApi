@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:spotify_viewer/view/element_view.dart';
-
 import '../model/fav_service.dart';
 import '../model/spotyfi_response_model.dart';
 import 'single_item_view.dart';
@@ -54,7 +52,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                 },
                 child: ListTile(
                   title: Text('Type: $type'),
-                  subtitle: Text('Name:${song['name']}'),
+                  subtitle: Text('Name: ${song['name']}'),
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {

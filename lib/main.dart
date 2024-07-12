@@ -20,12 +20,26 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   final FavoritesService favoritesService = FavoritesService();
   int _favoritesKey = 0;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Spotify Viewer',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        primaryColor: Color(0xFF1DB954), // Spotify green
+        hintColor: Color(0xFF1DB954),  // Spotify green
+        scaffoldBackgroundColor: Colors.black,
+        appBarTheme: AppBarTheme(
+          color: Colors.black,
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Color(0xFF1DB954), // Spotify green
+        ),
+        textTheme: TextTheme(
+          bodyText1: TextStyle(color: Colors.white),
+          bodyText2: TextStyle(color: Colors.white),
+        ),
       ),
       home: ProviderScope(
         child: MyHomePage(title: 'Spotify Viewer Home Page'),
@@ -44,18 +58,26 @@ class MyHomePage extends ConsumerWidget {
     final tokenManager = SpotyfyTokenManager.instance;
     final spotifyModel = SpotifyModel(tokenManager: tokenManager);
 
-    return FutureBuilder(
-      future: initializeTokenManager(tokenManager),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          final spotifyController = SpotifyController(spotifyModel);
-          return MainView(spotifyController: spotifyController, key: UniqueKey());
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: FutureBuilder(
+        future: initializeTokenManager(tokenManager),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            final spotifyController = SpotifyController(spotifyModel);
+            return MainView(
+              spotifyController: spotifyController,
+              key: UniqueKey(),
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -65,5 +87,3 @@ class MyHomePage extends ConsumerWidget {
     }
   }
 }
-
-

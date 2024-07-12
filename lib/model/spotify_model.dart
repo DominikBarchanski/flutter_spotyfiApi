@@ -12,27 +12,28 @@ class SpotifyModel {
     await tokenManager.initializeToken();
   }
 
-  Future<List<SpotifyItem>> fetchRandomSongs(String query,String dropdownValue) async {
+  Future<List<SpotifyItem>> fetchRandomSongs(String query, String dropdownValue) async {
     String token = tokenManager.accessToken;
-    String type = 'track';
-    dropdownValue = dropdownValue.toLowerCase();
+    String type = dropdownValue.toLowerCase();
     var response = await http.get(
-      Uri.parse('https://api.spotify.com/v1/search?q=$query&type=$dropdownValue'),
+      Uri.parse('https://api.spotify.com/v1/search?q=$query&type=$type'),
       headers: {
         'Authorization': 'Bearer $token',
       },
     );
-    type = dropdownValue+'s';
+
     if (response.statusCode == 200) {
       Map<String, dynamic> data = json.decode(response.body);
-      print(data.keys);
-      List<dynamic> items = data[type]['items'];
+      if (!data.containsKey('${type}s')) {
+        throw Exception('Unexpected response structure: missing ${type}s key');
+      }
+      List<dynamic> items = data['${type}s']['items'];
       return items.map((item) => SpotifyItem.fromJson(item)).toList();
     } else {
       print(response.body);
-      throw Exception('Failed to load songs');
+      throw Exception('Failed to load items');
     }
   }
 
-// Podobne metody dla albumów, wykonawców itp.
+// Similar methods for albums, artists, etc.
 }

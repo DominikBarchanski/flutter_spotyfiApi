@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../model/spotify_model.dart';
 import '../model/spotyfi_response_model.dart';
 
@@ -14,8 +13,7 @@ class SongDetailView extends StatelessWidget {
       appBar: AppBar(
         title: Text(song.name),
       ),
-      body:
-      Center(
+      body: Center(
         child: Column(
           children: [
             song.imageUrl.isEmpty
@@ -28,7 +26,6 @@ class SongDetailView extends StatelessWidget {
             if (song is Playlist) Text('Description: ${(song as Playlist).description}'),
             if (song is Show) Text('Publisher: ${(song as Show).publisher}'),
             if (song is Episode) Text('Show Name: ${(song as Episode).showName}'),
-
           ],
         ),
       ),
