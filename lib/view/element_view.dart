@@ -23,6 +23,7 @@ class SongDetailView extends StatelessWidget {
             if (song is Album) Text('Total Tracks: ${(song as Album).totalTracks}'),
             if (song is Album) Text('Artist: ${(song as Album).artistName.join(', ')}'),
             if (song is Track) Text('Artist: ${(song as Track).artist.join(', ')}'),
+            if (song is Track) Text('Artist: ${(song as Track).durationMs / 1000}s'),
             if (song is Playlist) Text('Description: ${(song as Playlist).description}'),
             if (song is Show) Text('Publisher: ${(song as Show).publisher}'),
             if (song is Episode) Text('Show Name: ${(song as Episode).showName}'),
